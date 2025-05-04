@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food Donation Chatbot</title>
+  <style>
+    .chat-container {
+      max-width: 400px;
+      margin: 50px auto;
+      border: 2px solid green;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f0fff0;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: gray;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    #response {
+      margin-top: 15px;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <h3>🤖 Food Connect Chatbot</h3>
+  <form id="chatForm">
+    <label>Your Name:</label>
+    <input type="text" name="name" required>
+
+    <label>Contact Number:</label>
+    <input type="text" name="phone" required>
+
+    <label>Location:</label>
+    <input type="text" name="location" required>
+
+    <label>Message / Query:</label>
+    <textarea name="message" required></textarea>
+
+    <button type="submit">Submit</button>
+    <div id="response"></div>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById("chatForm");
+  const responseDiv = document.getElementById("response");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    const res = await fetch("/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+    responseDiv.innerText = result.reply;
+    form.reset();
+  });
+</script>
+
+</body>
+</html>
